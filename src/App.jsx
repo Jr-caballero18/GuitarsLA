@@ -58,7 +58,7 @@ return cart.reduce((total, item) => total + item.quantity * item.price, 0);
 
   return (
     <>
-      <Header cart={cart} />
+      <Header cart={cart} total={calculateTotal()} />
 
       <main className="container-xl mt-5">
         <h2 className="text-center">Nuestra Colección</h2>

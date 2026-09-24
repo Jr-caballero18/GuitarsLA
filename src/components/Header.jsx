@@ -1,13 +1,11 @@
 import Guitar from "./Guitar";
 import { useMemo } from "react";
-import {calculateTotal} from "../App.jsx";
 //imports
-export default function Header({ cart }) {
+export default function Header({ cart, total }) {
   //toda la logica de la aplicacion va aqui
   //useMemo guarda en cache
   const isEmpty = useMemo(() => cart.length === 0, [cart]);
 
-  const total = calculateTotal;
   //en return toda estructura
   return (
     <header className="py-5 header">
