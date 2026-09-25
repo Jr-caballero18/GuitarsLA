@@ -1,7 +1,7 @@
 import Guitar from "./Guitar";
 import { useMemo } from "react";
 //imports
-export default function Header({ cart, total }) {
+export default function Header({ cart, total,increaseQuantity, decreaseQuantity, removeFromCart, emptyCart }) {
   //toda la logica de la aplicacion va aqui
   //useMemo guarda en cache
   const isEmpty = useMemo(() => cart.length === 0, [cart]);
@@ -58,16 +58,18 @@ export default function Header({ cart, total }) {
                             <td>{guitar.name}</td>
                             <td className="fw-bold">${guitar.price}</td>
                             <td className="flex align-items-start gap-4">
-                              <button type="button" className="btn btn-dark">
+                              <button type="button" className="btn btn-dark"  onClick={() => decreaseQuantity(guitar.id)}
+>
                                 -
                               </button>
                               {guitar.quantity}
-                              <button type="button" className="btn btn-dark">
+                              <button type="button" className="btn btn-dark" onClick={() => increaseQuantity(guitar.id)} >
                                 +
+                                
                               </button>
                             </td>
                             <td>
-                              <button className="btn btn-danger" type="button">
+                              <button className="btn btn-danger" type="button" onClick={() => removeFromCart(guitar.id)}>
                                 X
                               </button>
                             </td>
@@ -82,7 +84,7 @@ export default function Header({ cart, total }) {
                 <p className="text-end">
                   Total pagar: <span className="fw-bold">${total} </span>
                 </p>
-                <button className="btn btn-dark w-100 mt-3 p-2">
+                <button className="btn btn-dark w-100 mt-3 p-2" onClick={emptyCart}>
                   Vaciar Carrito
                 </button>
               </div>

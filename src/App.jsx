@@ -10,6 +10,9 @@ function App() {
   const [total, setTotal] = useState(0);
   const [cart, setCart] = useState([]);
 
+  const min_items = 1;
+  const max_items = 5;
+
   function handlerClick(item) {
     const guitarExists = cart.findIndex((guitar) => guitar.id === item.id);
     //console.log(guitarExists);
@@ -25,10 +28,61 @@ function App() {
     }
   }
 
-  function calculateTotal(){
+  function calculateTotal() {
 
-return cart.reduce((total, item) => total + item.quantity * item.price, 0);
-}
+    return cart.reduce((total, item) => total + item.quantity * item.price, 0);
+  }
+
+  function increaseQuantity(id) {
+    const updatedCart = cart.map((item) => {
+
+      if (item.id === id && item.quantity < max_items) {
+
+        return {
+          ...item, quantity: item.quantity + 1,
+        };
+
+      }
+      return item;
+    });
+    setCart(updatedCart);
+
+  }
+
+  function decreaseQuantity(id) {
+    const item = cart.find((guitar) => guitar.id === id);
+
+    if (item.quantity === min_items) {
+      removeFromCart(id)
+    } else {
+      const updatedCart = cart.map((guitar) => {
+
+        if (guitar.id === id) {
+          return {
+            ...guitar, quantity: guitar.quantity - 1,
+          };
+        }
+        return guitar;
+      })
+
+      setCart(updatedCart);
+
+    }
+  }
+
+  function removeFromCart(id) {
+
+    setCart((prevCart) => prevCart.filter((guitar) => guitar.id !== id));
+
+  }
+
+  function emptyCart() {
+
+    setCart([]);
+  }
+
+
+
 
 
   useEffect(() => {
@@ -58,15 +112,20 @@ return cart.reduce((total, item) => total + item.quantity * item.price, 0);
 
   return (
     <>
-      <Header cart={cart} total={calculateTotal()} />
+      <Header cart={cart} 
+      increaseQuantity={increaseQuantity}
+      decreaseQuantity={decreaseQuantity}
+      removeFromCart={removeFromCart}
+      emptyCart={emptyCart}
+      total={calculateTotal()} />
 
       <main className="container-xl mt-5">
         <h2 className="text-center">Nuestra Colección</h2>
 
         <div className="row mt-5">
           {data.map((guitar) => (
-            <Guitar  key = {guitar.id}
-            guitar={guitar} handlerClick={handlerClick}  />
+            <Guitar key={guitar.id}
+              guitar={guitar} handlerClick={handlerClick} />
           ))}
         </div>
       </main>
