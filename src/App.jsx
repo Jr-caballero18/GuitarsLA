@@ -4,14 +4,26 @@ import { db } from "./data/db.js";
 import Guitar from "./components/Guitar";
 //imports
 function App() {
+
+ const initialCart = () => {
+    const localStorageCart = window.localStorage.getItem('cart');
+    return localStorageCart ? JSON.parse(localStorageCart) : [];
+  };
+
+
   const [data, setData] = useState(db);
 
   const [auth, setAuth] = useState(false);
   const [total, setTotal] = useState(0);
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState(initialCart);
 
   const min_items = 1;
   const max_items = 5;
+
+
+useEffect(() => {
+        window.localStorage.setItem('cart', JSON.stringify(cart));
+    }, [cart]);
 
   function handlerClick(item) {
     const guitarExists = cart.findIndex((guitar) => guitar.id === item.id);
@@ -29,9 +41,11 @@ function App() {
   }
 
   function calculateTotal() {
-
-    return cart.reduce((total, item) => total + item.quantity * item.price, 0);
-  }
+  return cart.reduce((total, item) => {
+    if (!item) return total; 
+    return total + (item.quantity || 0) * (item.price || 0);
+  }, 0);
+}
 
   function increaseQuantity(id) {
     const updatedCart = cart.map((item) => {
@@ -101,7 +115,8 @@ function App() {
     console.log("Componente listo");
   }, []);
   useEffect(() => {
-    //Accion al cambio de una variable
+    //Accion al cambio de una vari
+    // able
     console.log("Token cambio ");
   }, [auth]);
   setTimeout(() => {
