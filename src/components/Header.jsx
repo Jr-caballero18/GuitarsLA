@@ -1,10 +1,9 @@
 import Guitar from "./Guitar";
 import { useMemo } from "react";
 //imports
-export default function Header({ cart, total,increaseQuantity, decreaseQuantity, removeFromCart, emptyCart }) {
+export default function Header({ cart, total,increaseQuantity, decreaseQuantity, removeFromCart, emptyCart,isEmpty }) {
   //toda la logica de la aplicacion va aqui
   //useMemo guarda en cache
-  const isEmpty = useMemo(() => cart.length === 0, [cart]);
 
   //en return toda estructura
   return (
@@ -94,4 +93,6 @@ export default function Header({ cart, total,increaseQuantity, decreaseQuantity,
       </div>
     </header>
   );
+
+  // mandar la logica de header  al hook 
 }
